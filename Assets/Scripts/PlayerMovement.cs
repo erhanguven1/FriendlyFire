@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerMovement : MonoBehaviourPun
 {
+    public Team myTeam;
     public float speed;
 
     void Awake()
