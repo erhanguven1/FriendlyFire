@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void DropFallObject()
     {
-        var obj = PhotonNetwork.InstantiateRoomObject("Banana", new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity).GetComponent<SceneObject>();
+        var obj = PhotonNetwork.Instantiate("Banana", new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity).GetComponent<SceneObject>();
         obj.photonView.RPC("SetTeam", RpcTarget.AllBuffered, (int)myTeam);
     }
 
