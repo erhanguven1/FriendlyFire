@@ -4,10 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerMovement : MonoBehaviourPun
+public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
     public Team myTeam;
     public float speed;
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(myTeam);
+        }
+        else
+        {
+            myTeam = (Team)stream.ReceiveNext();
+        }
+    }
 
     void Awake()
     {
@@ -22,4 +34,6 @@ public class PlayerMovement : MonoBehaviourPun
     {
         transform.position += Time.deltaTime*speed*(Vector3.right * Input.GetAxis("Horizontal") + Vector3.forward * Input.GetAxis("Vertical"));
     }
+
+    
 }
