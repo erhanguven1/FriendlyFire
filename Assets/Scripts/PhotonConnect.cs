@@ -1,20 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class PhotonConnect : MonoBehaviour
+public class PhotonConnect : MonoBehaviourPunCallbacks
 {
-    public int a;
 
     // Start is called before the first frame update
     void Start()
     {
-        print("c");
+        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.GameVersion = "0.1";
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnConnectedToMaster()
     {
-        
+        print("Connected");
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        PhotonNetwork.CreateRoom(string.Empty);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        print("Joined room");
+        SpawnCharacter();
+    }
+
+    void SpawnCharacter()
+    {
+        var player = PhotonNetwork.Instantiate("Player", Vector3.right * Random.Range(-9, 9), Quaternion.identity);
+
     }
 }
