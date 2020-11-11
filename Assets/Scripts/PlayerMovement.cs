@@ -28,11 +28,18 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             StartCoroutine(Fall());
         }
     }
-
     IEnumerator Fall()
     {
         var tempSpeed = speed;
         speed = 0;
+        yield return new WaitForSeconds(1.5f);
+        speed = tempSpeed;
+    }
+
+    IEnumerator SlowDown()
+    {
+        var tempSpeed = speed;
+        speed /= 2;
         yield return new WaitForSeconds(1.5f);
         speed = tempSpeed;
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneObject : MonoBehaviourPun
+public class SceneObject : MonoBehaviourPunCallbacks
 {
     public Team myTeam;
     
