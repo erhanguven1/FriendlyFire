@@ -25,7 +25,7 @@ public class Customer : SceneObject, IPunObservable
         TableInitializer.Instance.unusedTableList.Remove(tableToSit);
 
         transform.position = tableToSit.transform.position + Vector3.up * 2;
-        Invoke("Order", 2f);
+        InvokeRepeating("Order", 2f, 2f);
     }
 
     void Order()
