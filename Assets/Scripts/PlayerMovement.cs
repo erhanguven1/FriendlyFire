@@ -6,6 +6,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
+    public List<GameObject> ingredientList;
+
+    public Ingredients handObjectType;
+    public GameObject handObject;
+    bool isHandEmpty = true;
+
     public Team myTeam;
     public float speed;
 
@@ -27,7 +33,24 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         {
             StartCoroutine(Fall());
         }
+
     }
+
+    [PunRPC]
+    void GrabKitchenElement(int type)
+    {
+        isHandEmpty = false;
+
+        handObjectType = (Ingredients)type;
+        SpawnHandObject();
+        isHandEmpty = false;
+    }
+
+    private void SpawnHandObject()
+    {
+        ingredientList[(int)handObjectType].SetActive(true);
+    }
+
     IEnumerator Fall()
     {
         var tempSpeed = speed;
@@ -66,6 +89,15 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         if (Input.GetMouseButtonDown(1))
         {
             DropFallObject();
+        }
+
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out RaycastHit hit))
+        {
+            if (isHandEmpty && Input.GetMouseButtonDown(0) && hit.collider.GetComponent<KitchenElement>())
+            {
+                
+                photonView.RPC("GrabKitchenElement", RpcTarget.AllBuffered, (int)hit.collider.GetComponent<KitchenElement>().type);
+            }
         }
     }
 

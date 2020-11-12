@@ -4,7 +4,7 @@ using UnityEngine;
 public enum Team { Team1, Team2 }
 public enum NPCType { Customer, Kitchen }
 public enum OrderType 
-{ 
+{
     Burger,
     Cola,
     Wine,

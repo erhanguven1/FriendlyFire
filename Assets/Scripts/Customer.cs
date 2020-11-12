@@ -19,13 +19,21 @@ public class Customer : SceneObject, IPunObservable
         }
     }
 
+    public void CompareOrder(OrderType input)
+    {
+        if (true)
+        {
+
+        }
+    }
+
     void PlaceCustomer()
     {
         var tableToSit = TableInitializer.Instance.unusedTableList.RandomItem();
         TableInitializer.Instance.unusedTableList.Remove(tableToSit);
 
         transform.position = tableToSit.transform.position + Vector3.up * 2;
-        InvokeRepeating("Order", 2f, 2f);
+        Invoke("Order", 2f);
     }
 
     void Order()
