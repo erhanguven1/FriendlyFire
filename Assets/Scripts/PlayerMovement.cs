@@ -42,13 +42,16 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         isHandEmpty = false;
 
         handObjectType = (Ingredients)type;
-        SpawnHandObject();
+        ingredientList[(int)handObjectType].SetActive(true);
+
         isHandEmpty = false;
     }
 
-    private void SpawnHandObject()
+    [PunRPC]
+    void DropKitchenElement()
     {
-        ingredientList[(int)handObjectType].SetActive(true);
+        ingredientList[(int)handObjectType].SetActive(false);
+        isHandEmpty = true;
     }
 
     IEnumerator Fall()
@@ -98,6 +101,12 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 
                 photonView.RPC("GrabKitchenElement", RpcTarget.AllBuffered, (int)hit.collider.GetComponent<KitchenElement>().type);
             }
+        }
+
+        if (!isHandEmpty && Input.GetKeyDown(KeyCode.X))
+        {
+            photonView.RPC("DropKitchenElement", RpcTarget.AllBuffered);
+
         }
     }
 

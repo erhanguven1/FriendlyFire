@@ -5,16 +5,20 @@ public enum Team { Team1, Team2 }
 public enum NPCType { Customer, Kitchen }
 public enum OrderType 
 {
-    Burger,
     Cola,
     Wine,
-    Pizza,
+    Beer,
     Fries,
+    Burger,
+    Pizza,
     Hotdog
 }
 
 public enum Ingredients
 {
+    Cola,
+    Wine,
+    Beer,
     Bread,
     Meatball,
     Lettuce,
