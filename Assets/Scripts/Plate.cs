@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+
 
 public class Plate : MonoBehaviour
 {
@@ -13,10 +16,19 @@ public class Plate : MonoBehaviour
 
     int ingredientCount;
 
+
+    public static Plate Instance;
+
+
+    void Awake()
+    {
+        Instance = this;   
+    }
+
     public void OnAddIngredient(Ingredients ingredient)
     {
         ingredientCount++;
-        bool succeed = false;
+        
 
         if (ingredientCount==1)
         {
@@ -73,25 +85,44 @@ public class Plate : MonoBehaviour
 
     void TypeCalculated()
     {
-        player.photonView.RPC("DisplayType", Photon.Pun.RpcTarget.AllBuffered, (int)type);
+        ingredientCount = 0;
+        this.GetComponent<PhotonView>().RPC("DisplayType", RpcTarget.AllBuffered, (int)type);
+        
     }
 
-    [Photon.Pun.PunRPC]
+    [PunRPC]
 
     void DisplayType(int t)
     {
         plateText.text = ((OrderType)t).ToString();
     }
 
+
+
+    [Photon.Pun.PunRPC]
+    void PutPlate(int HandElement)
+    {
+        ingredientStack.Add((Ingredients)HandElement);
+        OnAddIngredient((Ingredients)HandElement);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponentInParent<PlayerMovement>();
+        type = OrderType.Empty;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            print(ingredientStack.Count);
+            for (int i = 0; i < ingredientStack.Count; i++)
+            {
+                print(ingredientStack[i].ToString()+"\n");
+            }
+        }
     }
 }

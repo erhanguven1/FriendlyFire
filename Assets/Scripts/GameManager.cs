@@ -11,7 +11,8 @@ public enum OrderType
     Fries,
     Burger,
     Pizza,
-    Hotdog
+    Hotdog,
+    Empty
 }
 
 public enum Ingredients

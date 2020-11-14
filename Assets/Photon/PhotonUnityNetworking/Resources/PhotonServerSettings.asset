@@ -41,6 +41,12 @@ MonoBehaviour:
   - SetTeam
   - GrabKitchenElement
   - DropKitchenElement
+  - DisplayType
+  - Start
+  - PutPlate
+  - CloseHandObj
+  - ShowText
+  - TakePlate
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

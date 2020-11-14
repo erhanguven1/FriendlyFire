@@ -7,10 +7,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
     public List<GameObject> ingredientList;
-
+    public GameObject HandPlate;
     public Ingredients handObjectType;
     public GameObject handObject;
-    bool isHandEmpty = true;
+    bool isHandEmpty = true, isSame=false;
 
     public Team myTeam;
     public float speed;
@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     [PunRPC]
     void GrabKitchenElement(int type)
     {
-        isHandEmpty = false;
 
         handObjectType = (Ingredients)type;
         ingredientList[(int)handObjectType].SetActive(true);
@@ -51,6 +50,9 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     void DropKitchenElement()
     {
         ingredientList[(int)handObjectType].SetActive(false);
+        HandPlate.GetComponent<HandPlate>().inPlateType = OrderType.Empty;
+        HandPlate.GetComponent<HandPlate>().inPlate.text = string.Empty;
+        HandPlate.SetActive(false);
         isHandEmpty = true;
     }
 
@@ -84,6 +86,43 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         }
     }
 
+
+    [PunRPC]
+    void CloseHandObj()
+    {
+        for (int i = 0; i < ingredientList.Count; i++)
+        {
+            ingredientList[i].SetActive(false);
+        }
+    }
+
+    void ControlPlateStackList()
+    {
+        for (int i = 0; i < Plate.Instance.ingredientStack.Count; i++)
+        {
+            if (Plate.Instance.ingredientStack[i] == handObjectType)
+            {
+                isSame = true;
+            }
+            else
+            {
+                isSame = false;
+            }
+        }
+    }
+
+
+    [PunRPC]
+    void TakePlate(int inPlate)
+    {
+        HandPlate.SetActive(true);
+        HandPlate.GetComponent<HandPlate>().inPlateType = (OrderType)inPlate;
+        HandPlate.GetComponent<HandPlate>().inPlate.text = ((OrderType)inPlate).ToString();
+        var TP = Plate.Instance;
+        TP.ingredientStack.Clear();
+        TP.plateText.text = string.Empty;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -101,7 +140,27 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 
                 photonView.RPC("GrabKitchenElement", RpcTarget.AllBuffered, (int)hit.collider.GetComponent<KitchenElement>().type);
             }
+
+            if (isHandEmpty && hit.collider.gameObject.GetComponent<Plate>() && Plate.Instance.type!=OrderType.Empty && Input.GetMouseButtonDown(0))
+            {
+                this.photonView.RPC("TakePlate", RpcTarget.AllBuffered, (int)Plate.Instance.type);
+                isHandEmpty = false;
+            }
+
+            if (!isHandEmpty && hit.collider.GetComponent<Plate>() && Input.GetMouseButtonDown(0))
+            {
+                ControlPlateStackList();
+                if (Plate.Instance.type==OrderType.Empty && !isSame)
+                {
+                    hit.collider.GetComponent<PhotonView>().RPC("PutPlate", RpcTarget.AllBuffered, (int)handObjectType);
+                    photonView.RPC("CloseHandObj", RpcTarget.AllBuffered);
+                    isHandEmpty = true;
+                }
+            }
+
+           
         }
+
 
         if (!isHandEmpty && Input.GetKeyDown(KeyCode.X))
         {

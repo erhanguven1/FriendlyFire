@@ -230,14 +230,14 @@ GameObject:
   - component: {fileID: 5261058563492582981}
   - component: {fileID: 3819372470460243690}
   - component: {fileID: 7110790720957734331}
-  - component: {fileID: 7346564716698883537}
+  - component: {fileID: 3079228691013982307}
   m_Layer: 0
   m_Name: Plate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5261058563492582981
 Transform:
   m_ObjectHideFlags: 0
@@ -313,7 +313,7 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &7346564716698883537
+--- !u!114 &3079228691013982307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,12 +322,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3737202667681295745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8579ec77d06c4c643b93b9f1e2e9855a, type: 3}
+  m_Script: {fileID: 11500000, guid: 72e8f37e9d857b0428f2d1458f089fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plateText: {fileID: 7110790720957734331}
-  ingredientStack: 
-  type: 0
+  inPlate: {fileID: 7110790720957734331}
+  inPlateType: 0
 --- !u!1 &5739775154128702777
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,6 +560,7 @@ MonoBehaviour:
   - {fileID: 5739775154128702777}
   - {fileID: 255302654197513171}
   - {fileID: 2951251791432756330}
+  HandPlate: {fileID: 3737202667681295745}
   handObjectType: 0
   handObject: {fileID: 0}
   myTeam: 0
