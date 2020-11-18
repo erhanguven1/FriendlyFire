@@ -24,12 +24,12 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(myTeam);
+            GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
         }
         else
         {
             myTeam = (Team)stream.ReceiveNext();
             GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
-
         }
     }
 
