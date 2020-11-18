@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         else
         {
             myTeam = (Team)stream.ReceiveNext();
+            GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
+
         }
     }
 
@@ -103,11 +105,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         {
             this.enabled = false;
         }
-    }
-
-    void Start()
-    {
-        GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
     }
 
     [PunRPC]
