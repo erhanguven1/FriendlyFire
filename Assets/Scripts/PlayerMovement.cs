@@ -166,7 +166,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         transform.position += Time.deltaTime*speed*(Vector3.right * Input.GetAxis("Horizontal") + Vector3.forward * Input.GetAxis("Vertical"));
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(2))
         {
             DropFallObject();
         }

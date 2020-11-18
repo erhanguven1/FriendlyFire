@@ -39,6 +39,7 @@ public class PhotonConnect : MonoBehaviourPunCallbacks
     {
         var player = PhotonNetwork.Instantiate("Player", Vector3.right * Random.Range(-9, 9), Quaternion.identity).GetComponent<PlayerMovement>();
         player.myTeam = teamSelector.value == 0 ? Team.Team1 : Team.Team2;
+        player.GetComponent<Renderer>().material.color = player.myTeam == Team.Team1 ? Color.blue : Color.red;
 
         TableInitializer.Instance.InitializeTables();
         UI.SetActive(false);
