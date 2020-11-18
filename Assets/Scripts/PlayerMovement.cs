@@ -105,6 +105,10 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         }
     }
 
+    void Start()
+    {
+        GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
+    }
 
     [PunRPC]
     void CloseHandObj()
