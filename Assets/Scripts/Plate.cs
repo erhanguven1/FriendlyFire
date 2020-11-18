@@ -14,7 +14,9 @@ public class Plate : MonoBehaviour
     public List<Ingredients> ingredientStack;
     public OrderType type;
 
-    int ingredientCount;
+    public Team PlateTeam;
+
+    public int ingredientCount;
 
 
     public static Plate Instance;
@@ -85,7 +87,7 @@ public class Plate : MonoBehaviour
 
     void TypeCalculated()
     {
-        ingredientCount = 0;
+        
         this.GetComponent<PhotonView>().RPC("DisplayType", RpcTarget.AllBuffered, (int)type);
         
     }
@@ -98,6 +100,8 @@ public class Plate : MonoBehaviour
     }
 
 
+
+    
 
     [Photon.Pun.PunRPC]
     void PutPlate(int HandElement)
@@ -116,6 +120,11 @@ public class Plate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ingredientCount==0)
+        {
+            type = OrderType.Empty;
+        }
+
         if (Input.GetKeyDown(KeyCode.K))
         {
             print(ingredientStack.Count);
@@ -124,5 +133,12 @@ public class Plate : MonoBehaviour
                 print(ingredientStack[i].ToString()+"\n");
             }
         }
+
+        if (ingredientCount<0)
+        {
+            ingredientCount = 0;
+        }
     }
+
+    
 }

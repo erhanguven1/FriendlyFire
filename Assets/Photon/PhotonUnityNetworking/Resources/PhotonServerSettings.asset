@@ -47,6 +47,9 @@ MonoBehaviour:
   - CloseHandObj
   - ShowText
   - TakePlate
+  - DropPlateIngredients
+  - TeamScore
+  - SetPlateType
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

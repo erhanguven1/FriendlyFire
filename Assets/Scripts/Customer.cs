@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class Customer : SceneObject, IPunObservable
 {
-    private OrderType myOrder;
+    public OrderType myOrder;
     public TextMesh orderText;
 
     void Start()
@@ -38,7 +38,7 @@ public class Customer : SceneObject, IPunObservable
 
     void Order()
     {
-        int r = Random.Range(0, 6);
+        int r = Random.Range(0,6);
         myOrder = (OrderType)r;
         orderText.text = myOrder.ToString();
     }

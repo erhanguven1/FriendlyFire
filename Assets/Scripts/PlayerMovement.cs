@@ -14,7 +14,11 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     public Team myTeam;
     public float speed;
+    int Score=0;
 
+
+
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -27,11 +31,27 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         }
     }
 
+    [PunRPC]
+    void TeamScore()
+    {
+        Score++;   
+    }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "FallObject" && col.GetComponent<SceneObject>().myTeam != myTeam)
         {
             StartCoroutine(Fall());
+        }
+
+        if (col.tag == "Customer" && col.GetComponent<Customer>().myOrder == HandPlate.GetComponent<HandPlate>().inPlateType)
+        {
+
+            photonView.RPC("TeamScore", RpcTarget.AllBuffered);
+            HandPlate.GetComponent<HandPlate>().inPlateType = OrderType.Empty;
+            HandPlate.GetComponent<HandPlate>().inPlate.text = string.Empty;
+            HandPlate.SetActive(false);
+            isHandEmpty = true;
         }
 
     }
@@ -42,7 +62,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         handObjectType = (Ingredients)type;
         ingredientList[(int)handObjectType].SetActive(true);
-
         isHandEmpty = false;
     }
 
@@ -98,15 +117,22 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void ControlPlateStackList()
     {
-        for (int i = 0; i < Plate.Instance.ingredientStack.Count; i++)
+        if (Plate.Instance.ingredientStack.Count==0)
         {
-            if (Plate.Instance.ingredientStack[i] == handObjectType)
+            isSame = false;
+        }
+        else
+        {
+            for (int i = 0; i < Plate.Instance.ingredientStack.Count; i++)
             {
-                isSame = true;
-            }
-            else
-            {
-                isSame = false;
+                if (Plate.Instance.ingredientStack[i] == handObjectType)
+                {
+                    isSame = true;
+                }
+                else
+                {
+                    isSame = false;
+                }
             }
         }
     }
@@ -121,11 +147,23 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         var TP = Plate.Instance;
         TP.ingredientStack.Clear();
         TP.plateText.text = string.Empty;
+        TP.ingredientCount = 0;
+        
+    }
+
+    [PunRPC]
+    void DropPlateIngredients()
+    {
+        var TP = Plate.Instance;
+        TP.ingredientStack.RemoveRange(TP.ingredientStack.Count - 1, 1);
+        TP.ingredientCount--;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
         transform.position += Time.deltaTime*speed*(Vector3.right * Input.GetAxis("Horizontal") + Vector3.forward * Input.GetAxis("Vertical"));
 
         if (Input.GetMouseButtonDown(1))
@@ -141,13 +179,13 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 photonView.RPC("GrabKitchenElement", RpcTarget.AllBuffered, (int)hit.collider.GetComponent<KitchenElement>().type);
             }
 
-            if (isHandEmpty && hit.collider.gameObject.GetComponent<Plate>() && Plate.Instance.type!=OrderType.Empty && Input.GetMouseButtonDown(0))
+            if (isHandEmpty && hit.collider.gameObject.GetComponent<Plate>() && Plate.Instance.type!=OrderType.Empty && Plate.Instance.PlateTeam==myTeam && Input.GetMouseButtonDown(0))
             {
                 this.photonView.RPC("TakePlate", RpcTarget.AllBuffered, (int)Plate.Instance.type);
                 isHandEmpty = false;
             }
 
-            if (!isHandEmpty && hit.collider.GetComponent<Plate>() && Input.GetMouseButtonDown(0))
+            if (!isHandEmpty && hit.collider.GetComponent<Plate>() && Plate.Instance.PlateTeam==myTeam && Input.GetMouseButtonDown(0))
             {
                 ControlPlateStackList();
                 if (Plate.Instance.type==OrderType.Empty && !isSame)
@@ -158,6 +196,10 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 }
             }
 
+            if (hit.collider.GetComponent<Plate>() && Input.GetMouseButtonDown(1))
+            {
+                photonView.RPC("DropPlateIngredients", RpcTarget.AllBuffered);
+            }
            
         }
 
@@ -167,7 +209,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             photonView.RPC("DropKitchenElement", RpcTarget.AllBuffered);
 
         }
+
+        
     }
 
-    
 }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PhotonConnect : MonoBehaviourPunCallbacks
 {
+    public GameObject UI;
     public Dropdown teamSelector;
     public Text nameSelector;
 
@@ -31,6 +32,7 @@ public class PhotonConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print("Joined room");
+        UI.SetActive(true);
     }
 
     public void SpawnCharacter()
@@ -39,5 +41,6 @@ public class PhotonConnect : MonoBehaviourPunCallbacks
         player.myTeam = teamSelector.value == 0 ? Team.Team1 : Team.Team2;
 
         TableInitializer.Instance.InitializeTables();
+        UI.SetActive(false);
     }
 }
