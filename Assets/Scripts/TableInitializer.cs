@@ -43,7 +43,7 @@ public class TableInitializer : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            CustomerManager.Instance.InitializeCustomers();
+            CustomerManager.Instance.StartCoroutine(CustomerManager.Instance.InitializeCustomers());
         }
     }
 

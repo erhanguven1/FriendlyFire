@@ -21,7 +21,6 @@ public class Plate : MonoBehaviour
 
     public static Plate Instance;
 
-
     void Awake()
     {
         Instance = this;   
@@ -87,9 +86,7 @@ public class Plate : MonoBehaviour
 
     void TypeCalculated()
     {
-        
         this.GetComponent<PhotonView>().RPC("DisplayType", RpcTarget.AllBuffered, (int)type);
-        
     }
 
     [PunRPC]
@@ -98,10 +95,6 @@ public class Plate : MonoBehaviour
     {
         plateText.text = ((OrderType)t).ToString();
     }
-
-
-
-    
 
     [Photon.Pun.PunRPC]
     void PutPlate(int HandElement)

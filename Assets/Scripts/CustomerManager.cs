@@ -6,20 +6,20 @@ using UnityEngine;
 public class CustomerManager : MonoBehaviour
 {
     public static CustomerManager Instance;
-    public Transform Sp;
+    public Transform spawnPoint;
     void Awake()
     {
         Instance = this;
     }
 
 
-    public int startCustomerCount = 5;
-    public void InitializeCustomers()
+    public int startCustomerCount;
+    public IEnumerator InitializeCustomers()
     {
         for (int i = 0; i < startCustomerCount; i++)
         {
-            var customer = PhotonNetwork.InstantiateRoomObject("Customer", Sp.transform.position, Quaternion.identity);
-
+            var customer = PhotonNetwork.InstantiateRoomObject("Customer", spawnPoint.transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(3f);
         }
     }
 

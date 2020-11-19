@@ -1215,7 +1215,7 @@ MonoBehaviour:
   - {fileID: 2910266334311656283}
   - {fileID: 4121286509235450007}
   - {fileID: 8798948846322618737}
-  HandPlate: {fileID: 6414410985505196325}
+  handPlate: {fileID: 3284123160719652071}
   handObjectType: 0
   handObject: {fileID: 0}
   myTeam: 0

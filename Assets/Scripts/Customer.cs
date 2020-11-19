@@ -12,37 +12,29 @@ public class Customer : SceneObject, IPunObservable
 
     public OrderType myOrder;
     public TextMesh orderText;
-    int TableNumber;
-    bool CanWalk;
-    NavMeshAgent Agent;
-    bool isFound = false, CanOrder=false, isOrdered;
+    NavMeshAgent agent;
+    bool isOrdered;
+
+    GameObject chosenTable;
+
     void Start()
     {
-        Agent = this.GetComponent<NavMeshAgent>();
+        agent = this.GetComponent<NavMeshAgent>();
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PlaceCustomer();
-        }
-
-        if (!isFound)
-        {
             FindAndGo();
         }
+
     }
 
-     void Update()
+    void Update()
     {
-        if (Agent.remainingDistance<2f && !isOrdered)
+        if (agent.remainingDistance<2f && !isOrdered)
         {
-            CanOrder = true;
-            if (CanOrder)
-            {
-                Invoke("Order", 2f);
-                CanOrder = false;
-                isOrdered = true;
-            }
-            
+            isOrdered = true;
+
+            Invoke("Order", 2f);
         }
     }
 
@@ -54,43 +46,17 @@ public class Customer : SceneObject, IPunObservable
         }
     }
 
-    void CompareTables()
-    {
-        
-        for (int i = 0; i < TableInitializer.Instance.unusedTableList.Count; i++)
-        {
-            if (TableInitializer.Instance.tableList[TableNumber] == TableInitializer.Instance.unusedTableList[i])
-            {
-                TableInitializer.Instance.unusedTableList.RemoveRange(i, 0);
-                Agent.SetDestination(TableInitializer.Instance.tableList[TableNumber].transform.position);
-                isFound = true;
-                break;
-            }
-
-           if (i == TableInitializer.Instance.unusedTableList.Count-1 && !isFound)
-            {
-                isFound = false;
-                FindAndGo();
-                break;
-            }
-        }
-    }
-
     void FindAndGo()
     {
-        TableNumber = Random.RandomRange(0, TableInitializer.Instance.tableList.Count - 1);
-        CompareTables();
-    }
+        chosenTable = TableInitializer.Instance.unusedTableList.RandomItem();
+        TableInitializer.Instance.unusedTableList.Remove(chosenTable);
 
-    void PlaceCustomer()
-    {
-        var tableToSit = TableInitializer.Instance.unusedTableList.RandomItem();
-        TableInitializer.Instance.unusedTableList.Remove(tableToSit);
+        agent.SetDestination(chosenTable.transform.position);
     }
 
     void Order()
     {
-        int r = Random.Range(0,6);
+        int r = Random.Range(0, Enum.GetNames(typeof(OrderType)).Length - 1);
         myOrder = (OrderType)r;
         orderText.text = myOrder.ToString();
     }
