@@ -34,6 +34,7 @@ public enum Ingredients
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public Plate[] hitPlates;
 
     private void Awake()
     {

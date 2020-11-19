@@ -18,8 +18,10 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public float speed;
     int Score=0;
 
-    void Awake()
+    void Start()
     {
+        hitPlate = GameManager.Instance.hitPlates[(int)myTeam];
+
         if (!photonView.IsMine)
         {
             this.enabled = false;
@@ -57,7 +59,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
             if (hit.collider.gameObject.GetComponent<Plate>() && hit.collider.gameObject.GetComponent<Plate>().PlateTeam == myTeam)
             {
-                hitPlate = hit.collider.gameObject.GetComponent<Plate>();
 
                 if (Input.GetMouseButtonDown(0))
                 {
