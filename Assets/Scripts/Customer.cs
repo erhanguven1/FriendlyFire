@@ -4,18 +4,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.AI;
 
 
 public class Customer : SceneObject, IPunObservable
 {
+
     public OrderType myOrder;
     public TextMesh orderText;
-
+    int TableNumber;
+    bool CanWalk;
+    NavMeshAgent Agent;
+    bool isFound = false, CanOrder=false, isOrdered;
     void Start()
     {
+        Agent = this.GetComponent<NavMeshAgent>();
+
         if (PhotonNetwork.IsMasterClient)
         {
             PlaceCustomer();
+        }
+
+        if (!isFound)
+        {
+            FindAndGo();
+        }
+    }
+
+     void Update()
+    {
+        if (Agent.remainingDistance<2f && !isOrdered)
+        {
+            CanOrder = true;
+            if (CanOrder)
+            {
+                Invoke("Order", 2f);
+                CanOrder = false;
+                isOrdered = true;
+            }
+            
         }
     }
 
@@ -27,13 +54,38 @@ public class Customer : SceneObject, IPunObservable
         }
     }
 
+    void CompareTables()
+    {
+        
+        for (int i = 0; i < TableInitializer.Instance.unusedTableList.Count; i++)
+        {
+            if (TableInitializer.Instance.tableList[TableNumber] == TableInitializer.Instance.unusedTableList[i])
+            {
+                TableInitializer.Instance.unusedTableList.RemoveRange(i, 0);
+                Agent.SetDestination(TableInitializer.Instance.tableList[TableNumber].transform.position);
+                isFound = true;
+                break;
+            }
+
+           if (i == TableInitializer.Instance.unusedTableList.Count-1 && !isFound)
+            {
+                isFound = false;
+                FindAndGo();
+                break;
+            }
+        }
+    }
+
+    void FindAndGo()
+    {
+        TableNumber = Random.RandomRange(0, TableInitializer.Instance.tableList.Count - 1);
+        CompareTables();
+    }
+
     void PlaceCustomer()
     {
         var tableToSit = TableInitializer.Instance.unusedTableList.RandomItem();
         TableInitializer.Instance.unusedTableList.Remove(tableToSit);
-
-        transform.position = tableToSit.transform.position + Vector3.up * 2;
-        Invoke("Order", 2f);
     }
 
     void Order()

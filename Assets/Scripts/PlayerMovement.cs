@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public GameObject handObject;
     bool isHandEmpty = true, isSame=false;
 
+    
+
     public Team myTeam;
     public float speed;
     int Score=0;
@@ -180,13 +182,13 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 photonView.RPC("GrabKitchenElement", RpcTarget.AllBuffered, (int)hit.collider.GetComponent<KitchenElement>().type);
             }
 
-            if (isHandEmpty && hit.collider.gameObject.GetComponent<Plate>() && Plate.Instance.type!=OrderType.Empty && Plate.Instance.PlateTeam==myTeam && Input.GetMouseButtonDown(0))
+            if (isHandEmpty && hit.collider.gameObject.GetComponent<Plate>() && Plate.Instance.type!=OrderType.Empty && Input.GetMouseButtonDown(0))
             {
                 this.photonView.RPC("TakePlate", RpcTarget.AllBuffered, (int)Plate.Instance.type);
                 isHandEmpty = false;
             }
 
-            if (!isHandEmpty && hit.collider.GetComponent<Plate>() && Plate.Instance.PlateTeam==myTeam && Input.GetMouseButtonDown(0))
+            if (!isHandEmpty && hit.collider.GetComponent<Plate>() && Input.GetMouseButtonDown(0))
             {
                 ControlPlateStackList();
                 if (Plate.Instance.type==OrderType.Empty && !isSame)

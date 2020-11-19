@@ -1081,6 +1081,7 @@ GameObject:
   - component: {fileID: 6022920398025166461}
   - component: {fileID: 8997186772298841}
   - component: {fileID: -216205229695015678}
+  - component: {fileID: 2089696807785077699}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1096,7 +1097,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6148152270180201713}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.034650803, y: -0.797348, z: 0.6337557}
+  m_LocalPosition: {x: -0.034650803, y: 0, z: 0.6337557}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1461861405928180578}
@@ -1251,6 +1252,22 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!208 &2089696807785077699
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148152270180201713}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6414410985505196325
 GameObject:
   m_ObjectHideFlags: 0

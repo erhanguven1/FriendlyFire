@@ -2,22 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TableInitializer : MonoBehaviour
 {
+    
     public static TableInitializer Instance;
     void Awake()
     {
         Instance = this;
     }
 
-    
     public Vector2Int area;
     public GameObject tablePrefab;
+
+    int TableNumber;
+    bool CanWalk;
 
     public List<GameObject> tableList, unusedTableList;
 
     // Start is called before the first frame update
+
+    void Start()
+    {
+        
+    }
     public void InitializeTables()
     {
 
@@ -37,6 +46,8 @@ public class TableInitializer : MonoBehaviour
             CustomerManager.Instance.InitializeCustomers();
         }
     }
+
+
 
     // Update is called once per frame
     void Update()
