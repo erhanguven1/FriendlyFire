@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                     }
                 }
 
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1) && hitPlate.ingredientCount>0)
                 {
                     photonView.RPC("DropPlateIngredients", RpcTarget.AllBuffered);
                 }
