@@ -33,7 +33,7 @@ public class Customer : SceneObject, IPunObservable
         if (agent.remainingDistance<2f && !isOrdered)
         {
             isOrdered = true;
-
+            orderText.transform.rotation = Quaternion.identity;
             Invoke("Order", 2f);
         }
     }

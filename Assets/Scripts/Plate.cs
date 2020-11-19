@@ -87,6 +87,7 @@ public class Plate : MonoBehaviour
     void TypeCalculated()
     {
         this.GetComponent<PhotonView>().RPC("DisplayType", RpcTarget.AllBuffered, (int)type);
+
     }
 
     [PunRPC]
@@ -116,6 +117,7 @@ public class Plate : MonoBehaviour
         if (ingredientCount==0)
         {
             type = OrderType.Empty;
+            plateText.text = string.Empty;
         }
 
         if (Input.GetKeyDown(KeyCode.K))
