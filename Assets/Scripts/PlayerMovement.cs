@@ -202,7 +202,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     [PunRPC]
     void DropPlateIngredients()
     {
-        hitPlate.ingredientStack.RemoveRange(hitPlate.ingredientStack.Count - 1, 1);
+        hitPlate.ingredientStack.RemoveAt(hitPlate.ingredientStack.Count - 1);
         hitPlate.ingredientCount--;
 
     }
