@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public Rigidbody throwableObjectRigidBody;
     bool isHandEmpty = true, isSame = false, isThrowable = false;
 
+    private Vector3 hitPoint;
+
     public float throwForce;
 
     Plate hitPlate;
@@ -67,6 +69,13 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
         {
+            hitPoint = hit.point;
+
+            var direction = (hitPoint - transform.position).normalized;
+            direction.y = 0;
+
+            transform.LookAt(transform.position + direction);
+
             if (isHandEmpty && Input.GetMouseButtonDown(0) && hit.collider.GetComponent<KitchenElement>())
             {
 
@@ -154,7 +163,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         throwableObjectRigidBody.isKinematic = false;
         throwableObjectRigidBody.useGravity = true;
-        throwableObjectRigidBody.AddForce(Vector3.forward * -throwForce / throwableObject.GetComponent<ObjectStats>().objectMass, ForceMode.Force);
+        throwableObjectRigidBody.AddForce(transform.forward * throwForce / throwableObject.GetComponent<ObjectStats>().objectMass, ForceMode.Force);
         throwableObject.GetComponent<PhotonView>().TransferOwnership(null);
 
         throwableObject.GetComponent<Collider>().enabled = true;
