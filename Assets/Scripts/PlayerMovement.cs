@@ -288,11 +288,13 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(myTeam);
             GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
+            stream.SendNext(myId);
         }
         else
         {
             myTeam = (Team)stream.ReceiveNext();
             GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
+            myId=(int)stream.ReceiveNext();
         }
     }
 
