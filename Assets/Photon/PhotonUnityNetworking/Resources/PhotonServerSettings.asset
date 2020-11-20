@@ -55,6 +55,8 @@ MonoBehaviour:
   - ThrowThrowableObject
   - AlignToPlayersHand
   - AddMeToPlayerList
+  - DropMe
+  - ThrowMe
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

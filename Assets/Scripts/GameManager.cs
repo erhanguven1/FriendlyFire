@@ -34,30 +34,12 @@ public enum Ingredients
     Empty
 }
 
-public class GameManager : MonoBehaviourPun, IPunObservable
+public class GameManager : MonoBehaviourPun
 {
     public static GameManager Instance;
     public Plate[] hitPlates;
     public List<PlayerMovement> players = new List<PlayerMovement>();
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        /*if (stream.IsWriting)
-        {
-            foreach (var item in players)
-            {
-                stream.SendNext(item);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
-            {
-                players.Add((PlayerMovement)stream.ReceiveNext());
-            }
-
-        }*/
-    }
 
     private void Awake()
     {

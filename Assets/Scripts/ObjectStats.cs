@@ -22,4 +22,25 @@ public class ObjectStats : MonoBehaviourPun
         myRigidbody.isKinematic = true;
         myRigidbody.useGravity = false;
     }
+
+    [PunRPC]
+    void DropMe()
+    {
+        myRigidbody.isKinematic = false;
+        myRigidbody.useGravity = true;
+
+        GetComponent<Collider>().enabled = true;
+        transform.SetParent(null);
+    }
+
+    [PunRPC]
+    void ThrowMe(Vector3 force)
+    {
+        myRigidbody.isKinematic = false;
+        myRigidbody.useGravity = true;
+        myRigidbody.AddForce(force / objectMass, ForceMode.Force);
+
+        GetComponent<Collider>().enabled = true;
+        transform.SetParent(null);
+    }
 }

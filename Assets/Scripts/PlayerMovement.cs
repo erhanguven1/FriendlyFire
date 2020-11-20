@@ -60,12 +60,19 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         {
             if (Input.GetMouseButtonDown(0))
             {
-                this.photonView.RPC("ThrowThrowableObject", RpcTarget.AllBuffered);
+                throwableObject.GetPhotonView().RPC("ThrowMe", RpcTarget.AllBuffered, transform.forward*throwForce);
+                isHandEmpty = true;
+                isThrowable = false;
+                throwableObject = null;
             }
 
             if (Input.GetMouseButtonDown(1))
             {
-                this.photonView.RPC("DropThrowableObject", RpcTarget.AllBuffered);
+                throwableObject.GetPhotonView().RPC("DropMe", RpcTarget.AllBuffered);
+
+                isHandEmpty = true;
+                isThrowable = false;
+                throwableObject = null;
             }
         }
 
@@ -141,22 +148,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    void DropThrowableObject()
-    {
-        throwableObjectRigidBody.isKinematic = false;
-        throwableObjectRigidBody.useGravity = true;
-        throwableObject.GetComponent<PhotonView>().TransferOwnership(null);
-
-        throwableObject.GetComponent<Collider>().enabled = true;
-        throwableObject.transform.SetParent(null);
-
-        isHandEmpty = true;
-        isThrowable = false;
-        throwableObject = null;
-        throwableObjectRigidBody = null;
-    }
-
-    [PunRPC]
     void ThrowThrowableObject()
     {
         throwableObjectRigidBody.isKinematic = false;
@@ -167,10 +158,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         throwableObject.GetComponent<Collider>().enabled = true;
         throwableObject.transform.SetParent(null);
         
-        isHandEmpty = true;
-        isThrowable = false;
-        throwableObject = null;
-        throwableObjectRigidBody = null;
+
     }
 
     [PunRPC]
