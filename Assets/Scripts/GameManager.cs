@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount+1; i++)
+            for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
             {
                 players.Add((PlayerMovement)stream.ReceiveNext());
             }
