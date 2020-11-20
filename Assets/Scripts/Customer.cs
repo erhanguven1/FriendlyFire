@@ -25,7 +25,11 @@ public class Customer : SceneObject, IPunObservable
         {
             FindAndGo();
         }
+        else
+        {
+            agent.enabled = false;
 
+        }
     }
 
     void Update()

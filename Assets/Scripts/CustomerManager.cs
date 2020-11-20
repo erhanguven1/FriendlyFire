@@ -11,14 +11,17 @@ public class CustomerManager : MonoBehaviour
     {
         Instance = this;
     }
+    void Start()
+    {
 
+    }
 
     public int startCustomerCount;
     public IEnumerator InitializeCustomers()
     {
         for (int i = 0; i < startCustomerCount; i++)
         {
-            var customer = PhotonNetwork.Instantiate("Customer", spawnPoint.transform.position, Quaternion.identity);
+            var customer = PhotonNetwork.InstantiateRoomObject("Customer", spawnPoint.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(3f);
         }
     }
