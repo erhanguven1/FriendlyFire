@@ -144,27 +144,14 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                     isThrowable = true;
 
                     throwableObject = hit.collider.gameObject;
+                    throwableObject.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
+
 
                     throwableObject.GetComponent<ObjectStats>().photonView.RPC("AlignToPlayersHand", RpcTarget.AllBuffered, myId);
                 }
             }
 
-
         }
-    }
-
-    [PunRPC]
-    void ThrowThrowableObject()
-    {
-        throwableObjectRigidBody.isKinematic = false;
-        throwableObjectRigidBody.useGravity = true;
-        throwableObjectRigidBody.AddForce(transform.forward * throwForce / throwableObject.GetComponent<ObjectStats>().objectMass, ForceMode.Force);
-        throwableObject.GetComponent<PhotonView>().TransferOwnership(null);
-
-        throwableObject.GetComponent<Collider>().enabled = true;
-        throwableObject.transform.SetParent(null);
-        
-
     }
 
     [PunRPC]
