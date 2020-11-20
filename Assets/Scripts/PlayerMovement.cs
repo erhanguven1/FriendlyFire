@@ -39,6 +39,11 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     }
 
+    void OnDestroy()
+    {
+        GameManager.Instance.players.Remove(this);
+    }
+
     void AddMeToPlayerList()
     {
         GameManager.Instance.players.Add(this);
