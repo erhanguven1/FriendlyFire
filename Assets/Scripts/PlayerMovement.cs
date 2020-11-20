@@ -50,10 +50,14 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         GameManager.Instance.players.Add(this);
     }
 
+    void FixedUpdate()
+    {
+        GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + Time.deltaTime * speed * (Vector3.right * Input.GetAxis("Horizontal") + Vector3.forward * Input.GetAxis("Vertical")));
+    }
+
     // Update is called once per frame
     void Update()
     {
-        transform.position += Time.deltaTime * speed * (Vector3.right * Input.GetAxis("Horizontal") + Vector3.forward * Input.GetAxis("Vertical"));
 
         if (Input.GetMouseButtonDown(2))
         {
