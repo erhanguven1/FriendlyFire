@@ -1216,8 +1216,11 @@ MonoBehaviour:
   - {fileID: 4121286509235450007}
   - {fileID: 8798948846322618737}
   handPlate: {fileID: 3284123160719652071}
-  handObjectType: 0
-  handObject: {fileID: 0}
+  handObjectType: 12
+  handObject: {fileID: 809221135365453765}
+  throwableObject: {fileID: 0}
+  throwableObjectRigidBody: {fileID: 0}
+  throwForce: 5000
   myTeam: 0
   speed: 7
 --- !u!54 &8997186772298841

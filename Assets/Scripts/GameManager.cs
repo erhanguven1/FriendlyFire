@@ -28,7 +28,8 @@ public enum Ingredients
     Cheese,
     Sos,
     Potato,
-    Wienie
+    Wienie,
+    Empty
 }
 
 public class GameManager : MonoBehaviour

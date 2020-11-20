@@ -8,6 +8,7 @@ TagManager:
   - Customer
   - CanBeGrabbed
   - Ground
+  - Throwable
   layers:
   - Default
   - TransparentFX

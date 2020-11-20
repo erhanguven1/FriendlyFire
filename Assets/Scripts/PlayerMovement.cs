@@ -9,8 +9,11 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public List<GameObject> ingredientList;
     public HandPlate handPlate;
     public Ingredients handObjectType;
-    public GameObject handObject;
-    bool isHandEmpty = true, isSame=false;
+    public GameObject handObject, throwableObject;
+    public Rigidbody throwableObjectRigidBody;
+    bool isHandEmpty = true, isSame = false, isThrowable = false;
+
+    public float throwForce;
 
     Plate hitPlate;
 
@@ -40,9 +43,23 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         Raycast();
 
+        if (isThrowable)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                this.photonView.RPC("ThrowThrowableObject", RpcTarget.AllBuffered);
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                this.photonView.RPC("DropThrowableObject", RpcTarget.AllBuffered);
+            }
+        }
+
         if (!isHandEmpty && Input.GetKeyDown(KeyCode.X))
         {
             photonView.RPC("DropKitchenElement", RpcTarget.AllBuffered);
+            handObjectType = Ingredients.Empty;
         }
 
     }
@@ -86,8 +103,67 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 }
             }
 
+            if (hit.collider.tag=="Throwable")
+            {
+                if (Input.GetKeyDown(KeyCode.E) && isHandEmpty)
+                {
+                    throwableObject = hit.collider.gameObject;
+                    throwableObjectRigidBody = hit.collider.gameObject.GetComponent<Rigidbody>();
+                    this.photonView.RPC("TakeThrowableObject", RpcTarget.AllBuffered);
+                }
+            }
+
 
         }
+    }
+
+    [PunRPC]
+    void TakeThrowableObject()
+    {
+        throwableObject.transform.SetParent(handObject.transform);
+        throwableObject.transform.position = handObject.transform.position;
+        throwableObject.GetComponent<Collider>().enabled = false;
+        throwableObject.GetPhotonView().RequestOwnership();
+
+        throwableObjectRigidBody.isKinematic = true;
+        throwableObjectRigidBody.useGravity = false;
+        
+        
+        isHandEmpty = false;
+        isThrowable = true;
+    }
+
+    [PunRPC]
+    void DropThrowableObject()
+    {
+        throwableObjectRigidBody.isKinematic = false;
+        throwableObjectRigidBody.useGravity = true;
+        throwableObject.GetComponent<PhotonView>().TransferOwnership(null);
+
+        throwableObject.GetComponent<Collider>().enabled = true;
+        throwableObject.transform.SetParent(null);
+
+        isHandEmpty = true;
+        isThrowable = false;
+        throwableObject = null;
+        throwableObjectRigidBody = null;
+    }
+
+    [PunRPC]
+    void ThrowThrowableObject()
+    {
+        throwableObjectRigidBody.isKinematic = false;
+        throwableObjectRigidBody.useGravity = true;
+        throwableObjectRigidBody.AddForce(Vector3.forward * -throwForce / throwableObject.GetComponent<ObjectStats>().objectMass, ForceMode.Force);
+        throwableObject.GetComponent<PhotonView>().TransferOwnership(null);
+
+        throwableObject.GetComponent<Collider>().enabled = true;
+        throwableObject.transform.SetParent(null);
+        
+        isHandEmpty = true;
+        isThrowable = false;
+        throwableObject = null;
+        throwableObjectRigidBody = null;
     }
 
     [PunRPC]
@@ -220,5 +296,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             GetComponent<Renderer>().material.color = myTeam == Team.Team1 ? Color.blue : Color.red;
         }
     }
+
 
 }
