@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
 public enum Team { Team1, Team2 }
 public enum NPCType { Customer, Kitchen }
@@ -44,5 +45,17 @@ public class GameManager : MonoBehaviourPun
     private void Awake()
     {
         Instance = this; 
+    }
+
+
+
+    [PunRPC]
+    void OnPlayerDisconnected(int disconnectedPlayerId)
+    {
+        var l = players.Where(x => x.myId > disconnectedPlayerId).ToList();
+        foreach (var item in l)
+        {
+            item.myId--;
+        }
     }
 }
