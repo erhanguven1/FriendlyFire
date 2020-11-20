@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
+    public int myId;
+
     public List<GameObject> ingredientList;
     public HandPlate handPlate;
     public Ingredients handObjectType;
@@ -26,6 +28,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     void Start()
     {
         hitPlate = GameManager.Instance.hitPlates[(int)myTeam];
+        GameManager.Instance.players.Add(this);
 
         if (!photonView.IsMine)
         {
@@ -116,30 +119,17 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             {
                 if (Input.GetKeyDown(KeyCode.E) && isHandEmpty)
                 {
+                    isHandEmpty = false;
+                    isThrowable = true;
+
                     throwableObject = hit.collider.gameObject;
-                    throwableObjectRigidBody = hit.collider.gameObject.GetComponent<Rigidbody>();
-                    this.photonView.RPC("TakeThrowableObject", RpcTarget.AllBuffered);
+
+                    throwableObject.GetComponent<ObjectStats>().photonView.RPC("AlignToPlayersHand", RpcTarget.AllBuffered, myId);
                 }
             }
 
 
         }
-    }
-
-    [PunRPC]
-    void TakeThrowableObject()
-    {
-        throwableObject.transform.SetParent(handObject.transform);
-        throwableObject.transform.position = handObject.transform.position;
-        throwableObject.GetComponent<Collider>().enabled = false;
-        throwableObject.GetPhotonView().RequestOwnership();
-
-        throwableObjectRigidBody.isKinematic = true;
-        throwableObjectRigidBody.useGravity = false;
-        
-        
-        isHandEmpty = false;
-        isThrowable = true;
     }
 
     [PunRPC]

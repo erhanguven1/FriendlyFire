@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public Plate[] hitPlates;
+    public List<PlayerMovement> players = new List<PlayerMovement>();
 
     private void Awake()
     {
