@@ -28,7 +28,7 @@ public class Customer : SceneObject, IPunObservable
         else
         {
             agent.enabled = false;
-
+            this.enabled = false;
         }
     }
 
