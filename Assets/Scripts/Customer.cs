@@ -23,7 +23,7 @@ public class Customer : SceneObject, IPunObservable
 
         if (PhotonNetwork.IsMasterClient)
         {
-            FindAndGo();
+            photonView.RPC("FindAndGo", RpcTarget.AllBuffered);
         }
         else
         {
@@ -50,6 +50,7 @@ public class Customer : SceneObject, IPunObservable
         }
     }
 
+    [PunRPC]
     void FindAndGo()
     {
         chosenTable = TableInitializer.Instance.unusedTableList.RandomItem();
