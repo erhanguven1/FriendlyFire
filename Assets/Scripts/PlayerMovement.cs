@@ -28,12 +28,19 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     void Start()
     {
         hitPlate = GameManager.Instance.hitPlates[(int)myTeam];
-        GameManager.Instance.players.Add(this);
+        photonView.RPC("AddMeToPlayerList", RpcTarget.AllBuffered);
 
         if (!photonView.IsMine)
         {
             this.enabled = false;
         }
+    }
+
+    [PunRPC]
+    void AddMeToPlayerList()
+    {
+        GameManager.Instance.players.Add(this);
+        myId = GameManager.Instance.players.Count;
     }
 
     // Update is called once per frame

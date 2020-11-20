@@ -38,6 +38,14 @@ public class GameManager : MonoBehaviour
     public Plate[] hitPlates;
     public List<PlayerMovement> players = new List<PlayerMovement>();
 
+    public void OnJoined(PlayerMovement playerToAdd)
+    {
+        foreach (var item in FindObjectsOfType<PlayerMovement>())
+        {
+            players.Add(item);
+        }
+    }
+
     private void Awake()
     {
         Instance = this; 
