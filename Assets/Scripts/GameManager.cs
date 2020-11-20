@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+
 public enum Team { Team1, Team2 }
 public enum NPCType { Customer, Kitchen }
 public enum OrderType 
@@ -32,17 +34,28 @@ public enum Ingredients
     Empty
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun, IPunObservable
 {
     public static GameManager Instance;
     public Plate[] hitPlates;
     public List<PlayerMovement> players = new List<PlayerMovement>();
 
-    public void OnJoined(PlayerMovement playerToAdd)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        foreach (var item in FindObjectsOfType<PlayerMovement>())
+        if (stream.IsWriting)
         {
-            players.Add(item);
+            foreach (var item in players)
+            {
+                stream.SendNext(item);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount+1; i++)
+            {
+                players.Add((PlayerMovement)stream.ReceiveNext());
+            }
+
         }
     }
 
