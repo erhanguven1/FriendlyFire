@@ -28,12 +28,13 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     void Start()
     {
         hitPlate = GameManager.Instance.hitPlates[(int)myTeam];
-        photonView.RPC("AddMeToPlayerList", RpcTarget.AllBuffered);
 
         if (!photonView.IsMine)
         {
             this.enabled = false;
         }
+
+        photonView.RPC("AddMeToPlayerList", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
