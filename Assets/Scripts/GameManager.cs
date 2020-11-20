@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
+        /*if (stream.IsWriting)
         {
             foreach (var item in players)
             {
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 players.Add((PlayerMovement)stream.ReceiveNext());
             }
 
-        }
+        }*/
     }
 
     private void Awake()
