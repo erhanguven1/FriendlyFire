@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                     isThrowable = true;
 
                     throwableObject = hit.collider.gameObject;
-                    throwableObject.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
+                    throwableObject.GetPhotonView().TransferOwnership(photonView.ViewID);
 
 
                     throwableObject.GetComponent<ObjectStats>().photonView.RPC("AlignToPlayersHand", RpcTarget.AllBuffered, myId);
