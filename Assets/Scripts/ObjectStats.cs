@@ -9,6 +9,14 @@ public class ObjectStats : MonoBehaviourPun
     public float objectMass;
     public Rigidbody myRigidbody;
 
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.GetComponent<PhotonView>())
+        {
+            photonView.TransferOwnership(col.collider.GetComponent<PhotonView>().Owner.ActorNumber);
+        }
+    }
+
     [PunRPC]
     void AlignToPlayersHand(int id)
     {
