@@ -27,6 +27,8 @@ public class ObjectStats : MonoBehaviourPun
         transform.position = player.handObject.transform.position;
         GetComponent<Collider>().enabled = false;
 
+        GetComponent<PhotonRigidbodyView>().enabled = false;
+
         myRigidbody.isKinematic = true;
         myRigidbody.useGravity = false;
     }
@@ -34,6 +36,8 @@ public class ObjectStats : MonoBehaviourPun
     [PunRPC]
     void DropMe()
     {
+        GetComponent<PhotonRigidbodyView>().enabled = true;
+
         myRigidbody.isKinematic = false;
         myRigidbody.useGravity = true;
 
@@ -44,6 +48,8 @@ public class ObjectStats : MonoBehaviourPun
     [PunRPC]
     void ThrowMe(Vector3 force)
     {
+        GetComponent<PhotonRigidbodyView>().enabled = true;
+
         myRigidbody.isKinematic = false;
         myRigidbody.useGravity = true;
         myRigidbody.AddForce(force / objectMass, ForceMode.Force);
