@@ -32,6 +32,8 @@ public class PhotonConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print("Joined room");
+        TableInitializer.Instance.InitializeTables();
+
         UI.SetActive(true);
     }
 
@@ -39,7 +41,6 @@ public class PhotonConnect : MonoBehaviourPunCallbacks
     {
         var player = PhotonNetwork.Instantiate("Player", Vector3.right * Random.Range(-9, 9) + Vector3.up, Quaternion.identity).GetComponent<PlayerMovement>();
         player.myTeam = teamSelector.value == 0 ? Team.Team1 : Team.Team2;
-        TableInitializer.Instance.InitializeTables();
         UI.SetActive(false);
     }
 }
