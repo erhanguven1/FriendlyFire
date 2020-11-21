@@ -25,8 +25,8 @@ public class Customer : SceneObject, IPunObservable
         {
             chosenTable = TableInitializer.Instance.unusedTableList.RandomItem();
             TableInitializer.Instance.unusedTableList.Remove(chosenTable);
-
-            photonView.RPC("FindAndGo", RpcTarget.AllBuffered, chosenTable.transform.position);
+            agent.SetDestination(chosenTable.transform.position);
+            //photonView.RPC("FindAndGo", RpcTarget.AllBuffered, chosenTable.transform.position);
         }
         else
         {
