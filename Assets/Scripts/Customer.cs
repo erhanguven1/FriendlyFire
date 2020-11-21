@@ -12,7 +12,7 @@ public class Customer : SceneObject, IPunObservable
 
     public OrderType myOrder;
     public TextMesh orderText;
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     bool isOrdered;
 
     GameObject chosenTable;
@@ -55,6 +55,10 @@ public class Customer : SceneObject, IPunObservable
     [PunRPC]
     void FindAndGo(Vector3 targetPos)
     {
+        if (agent==null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         agent.SetDestination(targetPos);
     }
 
