@@ -49,7 +49,8 @@ namespace Photon.Pun
         {
             if (!this.photonView.IsMine)
             {
-                transform.localPosition = Vector3.MoveTowards(transform.localPosition, this.m_NetworkPosition, this.m_Distance * (1.0f / PhotonNetwork.SerializationRate));
+                //transform.localPosition = Vector3.MoveTowards(transform.localPosition, this.m_NetworkPosition, this.m_Distance * (1.0f / PhotonNetwork.SerializationRate));
+                transform.localPosition = Vector3.Lerp(transform.localPosition, this.m_NetworkPosition, Time.deltaTime * 2);
                 transform.localRotation = Quaternion.RotateTowards(transform.localRotation, this.m_NetworkRotation, this.m_Angle * (1.0f / PhotonNetwork.SerializationRate));
             }
         }
