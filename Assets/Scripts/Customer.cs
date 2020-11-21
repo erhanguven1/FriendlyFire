@@ -23,7 +23,8 @@ public class Customer : SceneObject, IPunObservable
 
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("FindAndGo", RpcTarget.AllBuffered);
+            int indexOfChosenTable = TableInitializer.Instance.unusedTableList.IndexOf(TableInitializer.Instance.unusedTableList.RandomItem());
+            photonView.RPC("FindAndGo", RpcTarget.AllBuffered, indexOfChosenTable);
         }
         else
         {
@@ -50,9 +51,9 @@ public class Customer : SceneObject, IPunObservable
     }
 
     [PunRPC]
-    void FindAndGo()
+    void FindAndGo(int r)
     {
-        chosenTable = TableInitializer.Instance.unusedTableList.RandomItem();
+        chosenTable = TableInitializer.Instance.unusedTableList[r];
         TableInitializer.Instance.unusedTableList.Remove(chosenTable);
 
         agent.SetDestination(chosenTable.transform.position);
