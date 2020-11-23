@@ -37,6 +37,11 @@ public class PhotonConnect : MonoBehaviourPunCallbacks
         UI.SetActive(true);
     }
 
+    public override void OnLeftRoom()
+    {
+        ObjectStats.instance.GetComponent<PhotonView>().RPC("OnDisconnedtPlayer", RpcTarget.AllBuffered);
+    }
+
     public void SpawnCharacter()
     {
         var player = PhotonNetwork.Instantiate("Player", Vector3.right * Random.Range(-9, 9) + Vector3.up, Quaternion.identity).GetComponent<PlayerMovement>();

@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void OnDestroy()
     {
+        
+
         GameManager.Instance.photonView.RPC("OnPlayerDisconnected", RpcTarget.AllBuffered, myId);
         GameManager.Instance.players.Remove(this);
     }
@@ -58,6 +60,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
+
 
         if (Input.GetMouseButtonDown(2))
         {
