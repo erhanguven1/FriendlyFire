@@ -53,12 +53,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     void FixedUpdate()
     {
         GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + Time.deltaTime * speed * (Vector3.right * Input.GetAxis("Horizontal") + Vector3.forward * Input.GetAxis("Vertical")));
-
-        var direction = (hitPoint - transform.position).normalized;
-        direction.y = 0;
-
-        transform.LookAt(transform.position + direction);
-
     }
 
     // Update is called once per frame
@@ -104,6 +98,11 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
         {
             hitPoint = hit.point;
+
+            var direction = (hitPoint - transform.position).normalized;
+            direction.y = 0;
+
+            transform.LookAt(transform.position + direction);
 
             if (isHandEmpty && Input.GetMouseButtonDown(0) && hit.collider.GetComponent<KitchenElement>())
             {
