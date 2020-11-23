@@ -41,8 +41,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void OnDestroy()
     {
-        
-
+        GameManager.Instance.controlObject.GetPhotonView().RPC("OnDisconnectedPlayer", RpcTarget.AllBuffered);
         GameManager.Instance.photonView.RPC("OnPlayerDisconnected", RpcTarget.AllBuffered, myId);
         GameManager.Instance.players.Remove(this);
     }

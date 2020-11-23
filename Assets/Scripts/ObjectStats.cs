@@ -33,6 +33,7 @@ public class ObjectStats : MonoBehaviourPun
     {
         myRigidbody = GetComponent<Rigidbody>();
         player = GameManager.Instance.players[id];
+        GameManager.Instance.controlObject = this.gameObject;
         objectId = id;
 
         transform.SetParent(player.handObject.transform);
@@ -54,6 +55,7 @@ public class ObjectStats : MonoBehaviourPun
         myRigidbody.useGravity = true;
 
         GetComponent<Collider>().enabled = true;
+        GameManager.Instance.controlObject = null;
         transform.SetParent(null);
     }
 
@@ -67,6 +69,7 @@ public class ObjectStats : MonoBehaviourPun
         myRigidbody.AddForce(force / objectMass, ForceMode.Force);
 
         GetComponent<Collider>().enabled = true;
+        GameManager.Instance.controlObject = null;
         transform.SetParent(null);
     }
 
@@ -77,18 +80,11 @@ public class ObjectStats : MonoBehaviourPun
         {
             if (GameManager.Instance.players[objectId] == GameManager.Instance.players[i])
             {
-                print("oyunda");
                 break;
             }
             else if(i == GameManager.Instance.players.Count-1)
             {
-                GetComponent<PhotonRigidbodyView>().enabled = true;
-
-                myRigidbody.isKinematic = false;
-                myRigidbody.useGravity = true;
-
-                GetComponent<Collider>().enabled = true;
-                transform.SetParent(null);
+                GameManager.Instance.controlObject.GetPhotonView().RPC("DropMe", RpcTarget.AllBuffered);
             }
         }
     }

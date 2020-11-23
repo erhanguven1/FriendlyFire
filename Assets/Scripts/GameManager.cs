@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviourPun
     public static GameManager Instance;
     public Plate[] hitPlates;
     public List<PlayerMovement> players = new List<PlayerMovement>();
+    public GameObject controlObject;
 
 
     private void Awake()
