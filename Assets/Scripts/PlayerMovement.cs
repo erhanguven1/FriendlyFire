@@ -75,6 +75,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 throwableObject.GetPhotonView().RPC("ThrowMe", RpcTarget.AllBuffered, transform.forward*throwForce);
                 isHandEmpty = true;
                 isThrowable = false;
+                GameManager.Instance.controlObject = null;
                 throwableObject = null;
             }
 
@@ -84,6 +85,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
                 isHandEmpty = true;
                 isThrowable = false;
+                GameManager.Instance.controlObject = null;
                 throwableObject = null;
             }
         }
@@ -146,10 +148,12 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             {
                 if (Input.GetKeyDown(KeyCode.E) && isHandEmpty)
                 {
+                    
                     isHandEmpty = false;
                     isThrowable = true;
 
                     throwableObject = hit.collider.gameObject;
+                    GameManager.Instance.controlObject = throwableObject;
                     throwableObject.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
 
 
